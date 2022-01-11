@@ -1,6 +1,6 @@
 name: fluffychat
 base: core18
-version: git
+adopt-info: fluffychat
 summary: The cutest messenger in the Matrix network
 description: |
   FluffyChat is an open source, nonprofit and cute matrix messenger app. The app is easy to use but secure and decentralized.
@@ -60,6 +60,9 @@ parts:
     # Must be after: flutter-extension to set the flutter channel; flutter-extension will set it to “dev”, which is unhelpful
     after:
       - flutter-extension
+    override-build: |
+      snapcraftctl set-version $(git describe --always --tag)
+      snapcraftctl build
     override-pull: |
       snapcraftctl pull
       flutter channel stable
