@@ -44,11 +44,6 @@ confinement: strict
 
 architectures:
   - build-on: amd64
-  - build-on: arm64
-  - build-on: armhf
-    build-error: ignore
-  - build-on: ppc64el
-    build-error: ignore
 
 parts:
   olm:
