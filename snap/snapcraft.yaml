@@ -71,9 +71,11 @@ parts:
     build-packages:
       - libjsoncpp-dev
       - libsecret-1-dev
+      - libwebkit2gtk-4.0-dev
     stage-packages:
       - libsecret-1-dev
       - libjsoncpp-dev
+      - libwebkit2gtk-4.0-dev
       
 slots:
   dbus-svc:
