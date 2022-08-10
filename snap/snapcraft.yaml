@@ -76,12 +76,6 @@ parts:
       - libsecret-1-dev
       - libjsoncpp-dev
       - libwebkit2gtk-4.0-dev
-      
-slots:
-  dbus-svc:
-    interface: dbus
-    bus: session
-    name: chat.fluffy.fluffychat
 
 apps:
   fluffychat:
@@ -90,7 +84,9 @@ apps:
     command: fluffychat
     plugs:
       - network
+      - mount-observe
+      - x11
       - home
-    slots:
-      - dbus-svc
-
+      - removable-media
+      - browser-support
+      - password-manager-service
