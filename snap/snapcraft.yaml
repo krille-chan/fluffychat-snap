@@ -90,11 +90,6 @@ apps:
     command: fluffychat
     plugs:
       - network
-      - mount-observe
-      - x11
       - home
-      - removable-media
-      - browser-support
-      - password-manager-service
     slots:
       - dbus-svc
