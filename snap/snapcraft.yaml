@@ -1,5 +1,5 @@
 name: fluffychat
-base: core18
+base: core22
 adopt-info: fluffychat
 summary: The cutest messenger in the Matrix network
 description: |
@@ -51,31 +51,48 @@ parts:
     plugin: cmake
     source: https://gitlab.matrix.org/matrix-org/olm.git
     source-type: git
-    source-tag: 3.2.9
+    source-tag: '3.2.9'
     build-packages:
       - g++
-  fluffychat:
-    plugin: flutter
-    source: https://gitlab.com/famedly/fluffychat.git
-    flutter-target: lib/main.dart
-    # Must be after: flutter-extension to set the flutter channel; flutter-extension will set it to “dev”, which is unhelpful
-    after:
-      - flutter-extension
+
+  flutter-git:
+    source: https://github.com/flutter/flutter.git
+    source-branch: stable
+    plugin: nil
     override-build: |
-      snapcraftctl set-version $(git describe --always --tag)
-      snapcraftctl build
-    override-pull: |
-      snapcraftctl pull
+      set -eux
+      mkdir -p $CRAFT_PART_INSTALL/usr/bin
+      mkdir -p $CRAFT_PART_INSTALL/usr/libexec
+      cp -r $CRAFT_PART_SRC $CRAFT_PART_INSTALL/usr/libexec/flutter
+      ln -sf $CRAFT_PART_INSTALL/usr/libexec/flutter/bin/flutter $CRAFT_PART_INSTALL/usr/bin/flutter
+      export PATH="$CRAFT_PART_INSTALL/usr/bin:$PATH"
+      flutter doctor
       flutter channel stable
       flutter upgrade
     build-packages:
+      - clang
+      - cmake
+      - curl
+      - ninja-build
+      - unzip
+    override-prime: ''
+
+  fluffychat:
+    plugin: nil
+    source: https://gitlab.com/famedly/fluffychat.git
+    after: [flutter-git]
+    override-build: |
+      set -eux
+      flutter pub get || true
+      flutter build linux --release -v
+      craftctl set version="$(jq -r '.version' build/flutter_assets/version.json)"
+      mkdir -p $CRAFT_PART_INSTALL/bin
+      cp -r build/linux/*/release/bundle/* $CRAFT_PART_INSTALL/bin/
+    build-packages:
+      - jq
       - libjsoncpp-dev
-      - libsecret-1-dev
-      - libwebkit2gtk-4.0-dev
     stage-packages:
-      - libsecret-1-dev
-      - libjsoncpp-dev
-      - libwebkit2gtk-4.0-dev
+      - libjsoncpp25
 
 slots:
   dbus-svc:
@@ -83,18 +100,20 @@ slots:
     bus: session
     name: chat.fluffy.fluffychat
 
+environment:
+  LD_LIBRARY_PATH: ${SNAP_LIBRARY_PATH}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}:$SNAP/usr/lib:$SNAP/usr/lib/x86_64-linux-gnu:$SNAP/bin/lib
+
 apps:
   fluffychat:
-    extensions:
-      - flutter-dev
-    command: fluffychat
+    command: bin/fluffychat
+    extensions: [gnome]
     plugs:
-      - network
-      - mount-observe
-      - x11
-      - home
-      - removable-media
+      - audio-playback
       - browser-support
+      - home
+      - mount-observe
+      - network
       - password-manager-service
+      - removable-media
     slots:
       - dbus-svc
