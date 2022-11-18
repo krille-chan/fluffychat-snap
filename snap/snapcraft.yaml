@@ -85,23 +85,21 @@ parts:
       set -eux
       flutter pub get || true
       flutter build linux --release -v
-      craftctl set version="$(jq -r '.version' build/flutter_assets/version.json)"
+      snapcraftctl set-version $(git describe --always --tag)
       mkdir -p $CRAFT_PART_INSTALL/bin
       cp -r build/linux/*/release/bundle/* $CRAFT_PART_INSTALL/bin/
     build-packages:
-      - jq
+      - libsecret-1-dev
       - libjsoncpp-dev
     stage-packages:
-      - libjsoncpp25
+      - libsecret-1-dev
+      - libjsoncpp-dev
 
 slots:
   dbus-svc:
     interface: dbus
     bus: session
     name: chat.fluffy.fluffychat
-
-environment:
-  LD_LIBRARY_PATH: ${SNAP_LIBRARY_PATH}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}:$SNAP/usr/lib:$SNAP/usr/lib/x86_64-linux-gnu:$SNAP/bin/lib
 
 apps:
   fluffychat:
