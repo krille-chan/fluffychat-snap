@@ -101,7 +101,7 @@ parts:
       - libjsoncpp-dev
     override-prime: |
       craftctl default
-      rm $CRAFT_PRIME/usr/lib/x86_64-linux-gnu/libc_malloc_debug.so
+      rm $CRAFT_PRIME/usr/lib/*/libc_malloc_debug.so
 
 slots:
   dbus-svc:
