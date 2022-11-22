@@ -95,6 +95,7 @@ parts:
       execstack --clear-execstack $CRAFT_PART_INSTALL/bin/lib/fmedia/mod/libwavpack-ff.so
     build-packages:
       - libjsoncpp-dev
+      - execstack
     stage-packages:
       - libsecret-1-dev
       - libjsoncpp-dev
