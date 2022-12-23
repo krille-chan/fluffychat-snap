@@ -90,9 +90,6 @@ parts:
       craftctl set version=$(git describe --always --tag)
       mkdir -p $CRAFT_PART_INSTALL/bin
       cp -r build/linux/*/release/bundle/* $CRAFT_PART_INSTALL/bin/
-      # Library is shipped with an executable stack, which snap-review warns about
-      # The upstream library doesn't need an executable stack, so this one probably doesn't, either
-      execstack --clear-execstack $CRAFT_PART_INSTALL/bin/lib/fmedia/mod/libwavpack-ff.so
     build-packages:
       - libjsoncpp-dev
       - execstack
@@ -115,11 +112,14 @@ apps:
     extensions: [gnome]
     plugs:
       - audio-playback
-      - browser-support
-      - home
-      - mount-observe
+      - desktop
+      - desktop-legacy
       - network
-      - password-manager-service
+      - network-manager
+      - network-manager-observe
+      - opengl
       - removable-media
+      - browser-support
+      - password-manager-service
     slots:
       - dbus-svc
