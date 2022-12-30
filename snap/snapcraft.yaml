@@ -96,6 +96,7 @@ parts:
     stage-packages:
       - libsecret-1-dev
       - libjsoncpp-dev
+      - mpv
     override-prime: |
       craftctl default
       rm $CRAFT_PRIME/usr/lib/*/libc_malloc_debug.so
