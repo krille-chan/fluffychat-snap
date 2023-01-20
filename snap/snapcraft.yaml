@@ -1,4 +1,5 @@
 name: fluffychat
+title: FluffyChat
 base: core22
 adopt-info: fluffychat
 summary: The cutest messenger in the Matrix network
