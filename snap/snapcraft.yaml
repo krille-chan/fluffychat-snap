@@ -98,6 +98,7 @@ parts:
       - libsecret-1-dev
       - libjsoncpp-dev
       - mpv
+      - zenity
     override-prime: |
       craftctl default
       rm $CRAFT_PRIME/usr/lib/*/libc_malloc_debug.so
