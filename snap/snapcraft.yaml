@@ -60,7 +60,7 @@ parts:
 
   flutter-git:
     source: https://github.com/flutter/flutter.git
-    source-tag: 3.7.12
+    source-tag: 3.10.0
     plugin: nil
     override-build: |
       set -eux
