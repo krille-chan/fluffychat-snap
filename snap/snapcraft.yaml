@@ -115,6 +115,7 @@ apps:
       - audio-playback
       - desktop
       - desktop-legacy
+      - home
       - network
       - network-manager
       - network-manager-observe
